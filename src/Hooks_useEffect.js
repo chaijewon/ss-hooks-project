@@ -10,7 +10,15 @@ import axios from 'axios'
 function Hooks_useEffect() {
    const [music,setMusic]=useState([]);
    const [detail,setDetail]=useState({});
+   const [movie,setMovie]=useState([]);
    //var music=[];
+    // 화면 출력 전에 데이터를 읽을때 사용
+    //  async ==> await => 비동기 (react-thunk => 비동기 react-saga)
+    /*
+        <% %> useEffect
+
+        <html>
+     */
    useEffect(()=>{
        const fatchData=async ()=>{
            const result=await axios("http://localhost:3000/music.json")
@@ -19,9 +27,21 @@ function Hooks_useEffect() {
        }
        fatchData();
    },[])
-
+    useEffect(()=>{
+        const fatchData=async ()=>{
+            const result=await axios("http://localhost:3000/movie.json")
+            console.log(result.data);
+            setMovie(result.data);
+        }
+        fatchData();
+    },[])
+    {/* 이벤트 발생시 데이터값 state에 채우는 방식
+        onClick={()=>setDetail(m)}
+    */}
     const html=music.map((m)=>
-        <tr onClick={()=>setDetail(m)}>
+
+        <tr //onClick={()=>setDetail(m)}
+        >
             <td>{m.rank}</td>
             <td><img src={m.poster} width={"30%"} height={"30%"}/></td>
             <td>{m.title}</td>
@@ -31,7 +51,7 @@ function Hooks_useEffect() {
     return (
         <div className={"contanier"}>
             <div className={"row"}>
-                <div className={"col-md-8"}>
+                <div className={"col-md-6"}>
                 <table className={"table table-hover"}>
                     <thead>
                       <tr className={"danger"}>
@@ -46,13 +66,39 @@ function Hooks_useEffect() {
                     </tbody>
                 </table>
                 </div>
-                <div className={"col-md-4"}>
-                  <Detail m={detail}/>
+                <div className={"col-md-6"}>
+                  {/*<Detail m={detail}/>*/}
+                  <Movie movie={movie}/>
                 </div>
             </div>
         </div>
     )
 
+}
+function Movie(props) {
+    const html=props.movie.map((m)=>
+      <tr>
+          <td><img src={m.poster} width={"30"} height={"30"}/></td>
+          <td>{m.title}</td>
+          <td>{m.director}</td>
+          <td>{m.actor}</td>
+      </tr>
+    )
+    return (
+        <table className={"table table-hover"}>
+            <thead>
+              <tr className={"success"}>
+                  <th></th>
+                  <th>영화명</th>
+                  <th>감독</th>
+                  <th>출연</th>
+              </tr>
+            </thead>
+            <tbody>
+            {html}
+            </tbody>
+        </table>
+    )
 }
 function Detail(props) {
     return (
