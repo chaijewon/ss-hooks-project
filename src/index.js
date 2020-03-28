@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App2 from './App2';
-import Hooks_useState from './Hooks_useState'
+import Hooks_useEffect from './Hooks_useEffect'
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hooks_useState />
+    <Hooks_useEffect />
   </React.StrictMode>,
   document.getElementById('root')
 );
